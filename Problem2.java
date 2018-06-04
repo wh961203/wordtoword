@@ -1,41 +1,80 @@
-import java.util.*;
-public class Problem2{
-  public static void main(String[]args){
-    Scanner in = new Scanner(System.in);
-    int N = in.nextInt();//the numer of words
-    System.out.print(N+" ");
-    
-    String [] w = new String[N];//set an array that has N words in it 
-    int K = 0;
-    String p =" ";//for the first word.
-    String n =" ";//for the second word.
-    String z =" ";
-    boolean keep =true;//pc decide doing the true one or the false one.
-    
-    //set a new list and add the words which can adds in it.
-    
-    //add the words in to the string array.
-    for(int i=0;i<N;i++){
-      w[i]=in.next();
-      System.out.print(w[i]+" ");
-      p=w[0];
-    }
-    K=in.nextInt();//how many words we need in to the words game.
-    System.out.println(K);    
-    System.out.println(p);
-    
 
-    
-    for(int i =1;i<N;i++){
-      n=w[i];
-      //System.out.print(n+" ");
-      if((p.charAt(p.length()-1)) == n.charAt(0)){
-        p=n;
-        System.out.print(p+" ");
-      }
-        //if same, the statement will be true.  
-        //if not same, the statement will be false.                           
+import java.util.*;
+public class Problem2 {
+
+    static public boolean isEqual(String a, String b){
+      //determine the last letter of the first word is same as the last letter of the second word or not.
+        if (a.charAt(a.length()-1) == b.charAt(0)){
+            return true;//same.
+        }
+        return false;//not same.
     }
- }
-  
+    static public boolean has (String a, String[] out){
+      //check the word a has included in the output array or not.
+        for (int i=0; i<out.length; i++){
+            if (out[i] == a){
+                return true;//the word a is in the output array. 
+            }
+        }
+        return false;//the word a is not in the output array.
+    }
+
+
+    public static void main(String[]args) {
+        Scanner in = new Scanner(System.in);
+        int N = in.nextInt();//the number of words 
+
+        String[] array = new String[N];//the string array has N words
+        int K = 0;
+        int currentSize = 0;
+        //add the words into the array.
+        for (int i = 0; i < N; i++) {
+            array[i] = in.next();
+        }
+        //creat a output array with K words
+        K = in.nextInt();
+        String [] out = new String[K];
+
+        //System.out.print(N + " ");
+        //for (int i = 0; i < N; i++) {
+           // System.out.print(array[i] + " ");
+        //}//be sure the words is same as the problem input
+        //System.out.print(K + " ");
+
+
+       // System.out.println("\n");
+        String current = array[0];
+        //we have to use the current word as the first word.
+        
+        int count = 0;
+        while (count != N-1){
+            count = 0;
+            for (int i = 1; i<N; i++){
+
+                if(isEqual(current, array[i])&& !has(array[i], out)){
+                  //the last letter of the last word is same as the first letter of the next word and 
+                  //the next word is not include into the output array
+                    out[currentSize] = array[i];
+                  //add the next word into the output array
+                    current = array[i];
+                  //use the current word as the next word 
+                    currentSize++;
+                    count = N-1;
+                }else{
+                    count ++;
+                }
+            }
+        }
+
+        if (currentSize+1 < K){
+          //the words game can work.
+            System.out.println("IMPOSSIBLE");
+        }else{
+          //print the first word and the words in output .
+            System.out.println(array[0]+" ");
+            for (int j = 0; j<K-1; j++){
+                System.out.println(out[j]);
+            }
+        }
+    }
 }
